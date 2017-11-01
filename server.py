@@ -120,7 +120,11 @@ while 1:
                 print "sent "+str(x)+ " to client"
                 connectionSocket.send(str(x))
                 timestamp=datetime.datetime.now()
+<<<<<<< HEAD
+                temp=[addr[0],x,1,7200,p3,1,str(timestamp)]
+=======
                 temp=[addr[0],x,1,7200,p3,1,timestamp]
+>>>>>>> 7cff93745f7d55c98edec17b662e1a48df6b47a5
                 p_index.append(temp)
                 print p_index
         elif "voided" in sentence:
@@ -140,14 +144,22 @@ while 1:
                                 if p_index[x][1]==cookie:
                                         p_index[x][3]=7200
                                         p_index[x][5]+=1
+<<<<<<< HEAD
+                                        p_index[x][6]=str(datetime.datetime.now())
+=======
                                         p_index[x][6]=datetime.datetime.now()
+>>>>>>> 7cff93745f7d55c98edec17b662e1a48df6b47a5
                         connectionSocket.send("OK")
                 elif "query" in sentence:
                         c_list=[]
                         for x in range(l):
                                 if p_index[x][1]==cookie:
                                         p_index[x][5]+=1
+<<<<<<< HEAD
+                                        p_index[x][6]=str(datetime.datetime.now())
+=======
                                         p_index[x][6]=datetime.datetime.now()
+>>>>>>> 7cff93745f7d55c98edec17b662e1a48df6b47a5
                         for x in p_index:
                                 if x[2]!=0:
                                         c_list.append(x)

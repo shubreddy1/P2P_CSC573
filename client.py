@@ -120,7 +120,7 @@ def writer():
         s=storer()
         while 1:
                 sleep(19.1)
-		#print "wrote objects",rfc_list
+		print "wrote objects",rfc_list
                 #print "saving objects"
                 s.storeobj("rfc_list",rfc_list)
 
@@ -313,6 +313,7 @@ while 1:
                                                 if not data:
                                                         break
 						if "exit_code" in data:
+							f.write(data[:-24])
 							clientSocket.send("exit-ed")
 							clientSocket.close()
 							#print "closing file"
@@ -324,9 +325,9 @@ while 1:
 	                        	break
 			end_time=time.time()
 			total_time+=(end_time-start_time)
-			#stamp = open("../timestamps.txt","a+")
-			#stamp.write(str(end_time-start_time)+"\n")
-			#stamp.close()
+			stamp = open("../timestamps.txt","a+")
+			stamp.write(str(end_time-start_time)+"\n")
+			stamp.close()
 			print "stamp recorded"		
                 	if flg2==1:
 				break
