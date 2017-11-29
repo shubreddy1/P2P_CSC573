@@ -8,7 +8,7 @@ from time import sleep
 import thread
 
 total_time=0
-#s=storer()
+
 def create_srequest():
 	t=randint(60000,60100)
 	message="redirect port :"+str(t)
@@ -53,7 +53,6 @@ def change():
 	s2.connect(("10.0.0.1",80))
 	ip=s2.getsockname()[0]
         while 1:
-                #print "working\n"
                 if len(rfc_list)==0:
                         sleep(2)
                 else:
@@ -68,6 +67,7 @@ def change():
                         for x in to_remove:
                                 rfc_list.remove(x)
                         sleep(2)
+                        
 def handler(portno):
         serverPort = int(portno)
         serverSocket = socket(AF_INET,SOCK_STREAM)
@@ -80,9 +80,6 @@ def handler(portno):
         while "exit" not in sentence:
                 if "query" in sentence:
 			oly=s.retobj("rfc_list")
-			#print oly
-			#print "creating object stream"
-			#print len(s.cstream(oly))
                         connectionSocket.send(s.cstream(rfc_list))
                 elif "get" in sentence:
                         filename = sentence[sentence.find("get")+3:]
@@ -91,17 +88,11 @@ def handler(portno):
                         while (cont):
 				connectionSocket.send(cont)
 				cont = r.read(1024)
-                                #print "sent a chunk"
 			connectionSocket.send(cont)	                        
 			r.close()
-			#print "file transfer completed on my side"
-			#sleep(0.1)
                         connectionSocket.send("file exit_code completed")
                 sentence = connectionSocket.recv(1024)
-		#print sentence
-	#print "closing socket"
 	connectionSocket.close()
-        #print "socket closed"
 	return
 
 def updater():
@@ -112,7 +103,6 @@ def updater():
 		print "executing updater"
                 sleep(21)
                 for f in os.listdir("./rfc_files"):
-			#print [f,ip,7200]
                         if [f,ip,7200] not in rfc_list:
                                 rfc_list.append([f,ip,7200])
 
@@ -207,7 +197,7 @@ while 1:
                 serverPort = 12003 #default given port number
                 clientSocket = socket(AF_INET, SOCK_STREAM)
                 clientSocket.connect((serverName,serverPort))
-                if cookie==-1:
+                if cookie==-1:                                          # generate new cookie and start thread for the particular peer's client thread
                         pno = randint(65400,65500)
                         thread.start_new_thread(my_server,(pno,rfc_list,))
                         request = c1.create_first(hostname,pno)
@@ -283,27 +273,20 @@ while 1:
                         rport=int(reply[start+1:])
                         serverPort = rport
                         sleep(0.1)
-			#print serverName, serverPort
 			clientSocket = socket(AF_INET, SOCK_STREAM)
                         clientSocket.connect((serverName,serverPort))
-			#print "connection success"
                         clientSocket.send("query:"+filename)
                         oblist=clientSocket.recv(4096)
-			#print "objects fetched",oblist
                         f=open("temp2",'wb')
                         f.write(oblist)
                         f.close()
                         oblist=s.retobj("temp2")
-                        #rfc_list=s.retobj("rfc_list")
 			nrfc_list=[]
                         nrfc_list+=oblist
-                        #s.storeobj("rfc_list",rfc_list)
                         flg=0
                         for x in nrfc_list:
-				#print filename,x[0]
                                 if x[0]==filename and flg==0:
 					rfc_list.append(x)
-					#print filename
                                         clientSocket.send("get "+filename)
                                         f=open("rfc_files/"+filename,"wb")
                                         flg=1
@@ -341,21 +324,6 @@ while 1:
 	else:
 		print "invalid output"
 
-p="""serverName = 'localhost'
-serverPort = 12003
-clientSocket = socket(AF_INET, SOCK_STREAM)
-clientSocket.connect((serverName,serverPort))
-l=[]
-sentence=[1,2,3,4,5,6]
-f=open("ftemp","wb+")
-pickle.dump(sentence,f)
-f.close()
-f=open("ftemp","rb+")
-t=f.read()
-clientSocket.send(t)
-#modifiedSentence = clientSocket.recv(1024)
-#print 'From Server:', modifiedSentence
-clientSocket.close()"""
 
 
 
