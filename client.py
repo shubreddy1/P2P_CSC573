@@ -14,7 +14,7 @@ def create_srequest():
 	message="redirect port :"+str(t)
 	return message,t
 
-class creator:
+class creator:                                                  #create client's request
         def create_first(self,hostname,portnum):
                 hname = "hostname: "+hostname
                 port = "port: "+str(portnum)
